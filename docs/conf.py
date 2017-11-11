@@ -43,6 +43,7 @@ import sklearn_xarray
 extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.viewcode',
               'sphinx.ext.autosummary',
+              'sphinx.ext.mathjax',
               'numpydoc',
               'sphinx_gallery.gen_gallery']
 

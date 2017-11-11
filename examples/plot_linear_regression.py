@@ -20,20 +20,28 @@ lat, lon = np.ogrid[-45:45:50j, 0:360:100j]
 noise = np.random.randn(lat.shape[0], lon.shape[1])
 
 data_vars = {
-    'a': (['lat', 'lon'], np.sin(lat + lon)),
-    'b': (['lat', 'lon'], np.cos(lat + lon)),
+    'a': (['lat', 'lon'], np.sin(lat/90 + lon/100)),
+    'b': (['lat', 'lon'], np.cos(lat/90 + lon/100)),
     'noise': (['lat', 'lon'], noise)
 }
 
 coords = {'lat': lat.ravel(), 'lon': lon.ravel()}
 dataset = xr.Dataset(data_vars, coords)
 
+###############################################################################
 # make a simple linear model for the output
-# ..math:`y = a + .5 * b + 1`
-y = dataset.a + dataset.b * .5 + .1 * dataset.noise  + 1
-# The inputs should be a and b
-x = dataset[['a', 'b']]
+#
+# .. math::
+#
+#    y = a + .5 b + 1
 
+x = dataset[['a', 'b']]
+y = dataset.a + dataset.b * .5 + .3 * dataset.noise  + 1
+
+y.plot()
+
+
+###############################################################################
 # now we want to fit a linear regression model using these data
 mod = make_pipeline(
     make_union(
@@ -41,10 +49,13 @@ mod = make_pipeline(
         make_pipeline(Select('b'), Stacker())),
     LinearRegression())
 
+###############################################################################
 # for now we have to use Stacker manually to transform the output data
 # into a 2d array
 y_np = Stacker().fit_transform(y)
+print(y_np)
 
+###############################################################################
 # fit the model
 mod.fit(x, y_np)
 
