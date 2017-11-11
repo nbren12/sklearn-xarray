@@ -18,3 +18,4 @@ and make working with xarray objects a breeze.
 To see how to use these classes in conjuction with scikit-learn see
 :ref:`sphx_glr_auto_examples_plot_linear_regression.py`.
 
+.. _scikit-learn: http://www.scikit-learn.org

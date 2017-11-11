@@ -20,7 +20,6 @@ Usage
 The best way to learn to use this package is to check out the
 :ref:`examples`.
 
-.. _scikit-learn: http://www.scikit-learn.org
 
 Indices and tables
 ==================
