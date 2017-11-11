@@ -28,6 +28,7 @@ These classes implement the `scikit-learn`_ interface for transformations,
 and make working with xarray objects a breeze.
 
 .. autosummary::
+    :toctree: generated/
 
     Select
     Stacker
