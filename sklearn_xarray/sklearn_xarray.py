@@ -15,8 +15,8 @@ class Stacker(BaseEstimator, TransformerMixin):
     def transform(self, X: xr.DataArray):
         if not set(self.feature_dims) <= set(X.dims):
             raise ValueError(
-                f"dims {self.feature_dims} is not a subset of input"
-                "dimensions")
+                "dims {} is not a subset of input"
+                "dimensions".format(self.feature_dims))
 
         dim_dict = {'samples': [dim for dim in X.dims
                                 if dim not in self.feature_dims],
