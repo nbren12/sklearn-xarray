@@ -2,6 +2,7 @@ name: xarray_sklearn
 channels:
   - defaults
 dependencies:
+  - python=3
   - numpy
   - xarray
   - scikit-learn
