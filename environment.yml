@@ -1,0 +1,8 @@
+name: xarray_sklearn
+channels:
+  - defaults
+dependencies:
+  - numpy
+  - xarray
+  - scikit-learn
+  - matplotlib
