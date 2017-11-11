@@ -4,6 +4,9 @@ Linear Regression of multivariate data
 
 In this example, we demonstrate how to use sklearn_xarray classes to solve a
 simple linear regression problem on synthetic dataset.
+
+This class demonstrates the use of :py:class:`~sklearn_xarray.Stacker` and
+:py:class:`~sklearn_xarray.Select`.
 """
 import numpy as np
 import xarray as xr

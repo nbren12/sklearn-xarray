@@ -62,3 +62,5 @@ target/
 .python-version
 docs/auto_examples
 .idea
+/docs/generated
+/docs/modules
