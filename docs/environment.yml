@@ -7,3 +7,7 @@ dependencies:
   - xarray
   - scikit-learn
   - matplotlib
+  - pip
+  - pip:
+      - numpydoc
+      - sphinx-gallery
