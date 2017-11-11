@@ -13,6 +13,7 @@ Contents:
    contributing
    authors
    history
+   auto_examples/index
 
 Indices and tables
 ==================
