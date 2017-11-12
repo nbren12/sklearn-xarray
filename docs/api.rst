@@ -14,6 +14,8 @@ and make working with `xarray`_ objects a breeze.
 
     Select
     Stacker
+    XarrayUnion
+
 
 To see how to use these classes in conjuction with scikit-learn see
 :ref:`sphx_glr_auto_examples_plot_linear_regression.py`.

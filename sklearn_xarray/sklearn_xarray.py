@@ -1,8 +1,44 @@
+import attr
 import pandas as pd
 import numpy as np
 import xarray as xr
 
+from sklearn.externals.joblib import Parallel, delayed
+from sklearn.pipeline import _transform_one
 from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.pipeline import FeatureUnion
+
+class XarrayUnion(FeatureUnion):
+    """A version of feature union which keeps track of the index"""
+
+    def transform(self, X):
+        """Transform X separately by each transformer, concatenate results.
+        Parameters
+        ----------
+        X : iterable or array-like, depending on transformers
+            Input data to be transformed.
+        Returns
+        -------
+        X_t : array-like or sparse matrix, shape (n_samples, sum_n_components)
+            hstack of results of transformers. sum_n_components is the
+            sum of n_components (output dimension) over transformers.
+        """
+
+        Xs = Parallel(n_jobs=self.n_jobs)(
+            delayed(_transform_one)(trans, weight, X)
+            for name, trans, weight in self._iter())
+        if not Xs:
+            # All transformers are None
+            return np.zeros((X.shape[0], 0))
+
+        # make new Index for output
+        names = [elm[0] for elm in self._iter()]
+        idx = pd.Index(names, name="features")
+
+        return xr.concat(Xs, dim=idx)
+
+    def fit_transform(self, X, y=None):
+        return self.fit(X, y).transform(X)
 
 
 class Stacker(BaseEstimator, TransformerMixin):
