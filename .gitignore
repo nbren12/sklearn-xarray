@@ -64,3 +64,4 @@ docs/auto_examples
 .idea
 /docs/generated
 /docs/modules
+.DS_Store
