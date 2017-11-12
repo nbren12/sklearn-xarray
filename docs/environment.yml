@@ -11,3 +11,4 @@ dependencies:
   - pip:
       - numpydoc
       - sphinx-gallery
+      - attrs
