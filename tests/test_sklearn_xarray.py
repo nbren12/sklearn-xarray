@@ -13,16 +13,6 @@ from sklearn.pipeline import make_pipeline
 
 
 @pytest.fixture
-def response():
-    """Sample pytest fixture.
-
-    See more at: http://doc.pytest.org/en/latest/fixture.html
-    """
-    # import requests
-    # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
-
-
-@pytest.fixture
 def synthetic_data():
 
     # Make synthetic data
@@ -39,12 +29,6 @@ def synthetic_data():
     dataset = xr.Dataset(data_vars, coords)
 
     return dataset
-
-
-def test_content(response):
-    """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
 
 
 @pytest.mark.xfail
@@ -75,12 +59,8 @@ def test_concat_multindexes():
     idx1 = pd.MultiIndex.from_tuples(tuples, names=['n1', 'n2'])
     idx2 = pd.MultiIndex.from_tuples(tuples, names=['m1', 'm2'])
 
-    tuples = [
-        ('a', 0, None, None),
-        ('a', 1, None, None),
-        (None, None, 'a', 0),
-        (None, None, 'a', 1)
-    ]
+    tuples = [('a', 0, None, None), ('a', 1, None, None), (None, None, 'a', 0),
+              (None, None, 'a', 1)]
 
     expected = pd.MultiIndex.from_tuples(tuples, names=idx1.names + idx2.names)
     cat = concat_multi_indexes((idx1, idx2))
