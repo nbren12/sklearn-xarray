@@ -47,6 +47,7 @@ def test_content(response):
     # assert 'GitHub' in BeautifulSoup(response.content).title.string
 
 
+@pytest.mark.xfail
 def test_xarray_union(synthetic_data):
     """Test xarray_union"""
     union = XarrayUnion(
