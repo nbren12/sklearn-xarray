@@ -8,8 +8,71 @@ from sklearn.pipeline import _transform_one
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.pipeline import FeatureUnion
 
+def unique(seq):
+    out = []
+    for i in seq:
+        if i not in out:
+            out.append(i)
+    return out
+
+def concat(seq):
+    out = []
+    for i in seq:
+        out.extend(i)
+    return out
+
+def concat_multi_indexes(idxs):
+
+
+    names = concat(idx.names for idx in idxs)
+    names = unique(names)
+
+    if None in names:
+        raise ValueError("All input indexes must have names")
+
+    d = {k: [] for k in names}
+    for idx in idxs:
+        for name in names:
+            try:
+                d[name].append(idx.get_level_values(name))
+            except KeyError:
+                d[name].append(np.array([None]*len(idx)))
+
+    arrays = [np.concatenate(d[name]) for name in names]
+    return pd.MultiIndex.from_arrays(arrays, names=names)
+
+def concat_features(args, feature_dim_name='feature'):
+    """Concatenate Xs along a set of feature dimensions
+
+    Parameters
+    ----------
+    args : iterable
+        list of tuples of the form (dims, DataArray) where dims is a tuple of dimensions that will be considered feature dimensions
+
+    Returns
+    -------
+    stacked : xr.DataArray
+        The output where the data has been stacked along the feature_dim_name
+    """
+    indexes = []
+    arrays = []
+
+    for dims, xarr in args:
+        stacked_arr = xarr.stack(**{feature_dim_name: dims})
+
+        indexes.append(stacked_arr.indexes[feature_dim_name])
+        arrays.append(stacked_arr)
+
+    index = concat_multi_indexes(indexes)
+    return xr.concat(arrays, dim=index)
+
+
 class XarrayUnion(FeatureUnion):
     """A version of feature union which keeps track of the index"""
+
+    def __init__(self, feature_dims=()):
+        "docstring"
+        self.feature_dims = feature_dims
 
     def transform(self, X):
         """Transform X separately by each transformer, concatenate results.
